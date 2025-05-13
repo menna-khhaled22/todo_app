@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app/firebase_utils.dart';
 import 'package:todo_app/model/task.dart';
+import 'package:todo_app/providers/auth_user_provider.dart';
 import 'package:todo_app/providers/list_provider.dart';
 import 'task_list_item.dart';
 class TaskListTab extends StatefulWidget {
@@ -14,14 +15,13 @@ class TaskListTab extends StatefulWidget {
 
 class _TaskListTabState extends State<TaskListTab> {
 
-
-
   @override
   Widget build(BuildContext context) {
     var listProvider = Provider.of<ListProvider>(context);
+    var authProvider = Provider.of<AuthUserProvider>(context);
 
     if(listProvider.tasksList.isEmpty){
-      listProvider.getAllTasksFromFireStore();
+      listProvider.getAllTasksFromFireStore(authProvider.currentUser!.id!);
     }
     return Column(
       children: [
@@ -29,7 +29,7 @@ class _TaskListTabState extends State<TaskListTab> {
           initialDate: listProvider.selectDate,
           onDateChange: (selectedDate) {
             //`selectedDate` the new date selected.
-            listProvider.changeSelectDate(selectedDate);
+            listProvider.changeSelectDate(selectedDate, authProvider.currentUser!.id!);
           },
           activeColor: const Color(0xff5D9CEC),
           dayProps: const EasyDayProps(
