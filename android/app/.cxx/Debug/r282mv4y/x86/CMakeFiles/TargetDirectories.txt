@@ -1,0 +1,2 @@
+C:/Users/menna/StudioProjects/todo_App/android/app/.cxx/Debug/r282mv4y/x86/CMakeFiles/edit_cache.dir
+C:/Users/menna/StudioProjects/todo_App/android/app/.cxx/Debug/r282mv4y/x86/CMakeFiles/rebuild_cache.dir

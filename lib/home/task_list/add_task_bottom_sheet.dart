@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:todo_app/app_colors.dart';
 import 'package:todo_app/firebase_utils.dart';
 import 'package:todo_app/model/task.dart';
+import 'package:todo_app/providers/auth_user_provider.dart';
 import 'package:todo_app/providers/list_provider.dart';
 
 class AddTaskBottomSheet extends StatefulWidget {
@@ -126,10 +127,20 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
         isDone: true
       );
 
-      FirebaseUtils.addTaskToFireStore(task).timeout(Duration(seconds: 1),
+     var authProvider = Provider.of<AuthUserProvider>(context , listen: false);
+
+      FirebaseUtils.addTaskToFireStore(task , authProvider.currentUser!.id!)
+      .then((value) {
+        print("Task added successfully!");
+        listProvider.getAllTasksFromFireStore(authProvider.currentUser!.id!);
+        Navigator.pop(context);
+      }
+      )
+          .timeout(Duration(seconds: 1),
+
       onTimeout: (){
         print("Task added successfully!");
-        listProvider.getAllTasksFromFireStore();
+        listProvider.getAllTasksFromFireStore(authProvider.currentUser!.id!);
         Navigator.pop(context);
       });
     }
