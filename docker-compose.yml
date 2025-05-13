@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  sqlite:
+    image: nouchka/sqlite3
+    volumes:
+      - ./sqlite_data:/root/db
+    container_name: sqlite_container
+
+  flutter_app:
+    build: .
+    container_name: flutter_app_container
+    depends_on:
+      - sqlite
+    volumes:
+      - ./flutter_app:/app
+    command: bash -c "flutter pub get && flutter run"
